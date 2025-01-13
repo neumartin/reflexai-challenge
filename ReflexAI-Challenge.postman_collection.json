@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "05dd816a-de02-4cd1-bc50-15b3bd43c8e9",
+		"name": "ReflexAI-Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "2373868"
+	},
+	"item": [
+		{
+			"name": "Call with person_id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"person_id\": \"123\",\n    \"text\": \"I need help with my life. I feel sad today, very sad sssss.\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/api/v1/sentiment-analyze"
+			},
+			"response": []
+		},
+		{
+			"name": "Call without person_id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"text\": \"I need help with my life. I feel sad today, very sad.\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/api/v1/sentiment-analyze"
+			},
+			"response": []
+		},
+		{
+			"name": "Call without text to FAIL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/api/v1/sentiment-analyze"
+			},
+			"response": []
+		}
+	]
+}

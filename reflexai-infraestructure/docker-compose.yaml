@@ -1,0 +1,75 @@
+services:
+
+  mongo:
+    image: mongodb/mongodb-community-server:7.0.14-ubi9
+    container_name: reflexai-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+    networks:
+      - reflexai-network
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:4.0.5
+    container_name: reflexai-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5672:5672"  # RabbitMQ broker port
+      - "15672:15672" # RabbitMQ management console
+    command: >
+      bash -c "rabbitmq-plugins enable rabbitmq_management && rabbitmq-server"
+    networks:
+      - reflexai-network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  sentiment-analyze:
+    build: ../reflexai-sentiment-analyze-microservice
+    container_name: reflexai-sentiment-analyze-ms
+    env_file:
+      - .env
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS_LOCAL}:/google-key.json
+    networks:
+      - reflexai-network
+    depends_on:
+      - mongo
+      - rabbitmq
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://rabbitmq:15672/api/whoami"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    build: ../reflexai-apigateway-microservice
+    container_name: reflexai-api-gateway-ms
+    env_file:
+      - .env
+    ports:
+      - "0.0.0.0:8090:3000"
+    networks:
+      - reflexai-network
+    depends_on:
+      - mongo
+      - rabbitmq
+      - sentiment-analyze
+
+volumes:
+  mongo_data: # Named volume for MongoDB
+  rabbitmq_data: # Named volume for RabbitMQ
+
+networks:
+  reflexai-network:
+    driver: bridge
