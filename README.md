@@ -24,7 +24,7 @@
 - If you omit person_id, it will be considered "anonymous".
 - I used the POST method instead of the GET because it is more secure and allows me to send more text without the GET method's character length limitations.
 - To test the service, you can use the Postman Json collection provided in this repository, located in the root folder and named **_ReflexAI-Challenge.postman_collection.json_**.
-- Also, you can run the API with Swagger at http://localhost:8080/api URL.
+- Also, you can run the API with Swagger at http://localhost:8090/api URL.
 
 ## To run tests:
 - Run: `npm run test` inside **_reflexai-apigateway-microservice_** folder.
