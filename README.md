@@ -15,7 +15,7 @@
 - Ensure the .env file in the **_reflexai-infraestructure_** folder was filled with the correct values. Also, be sure the variable GOOGLE_APPLICATION_CREDENTIALS_LOCAL points to your Google key JSON file.
 - Ensure you have the Google Cloud service account credentials file (JSON) with the appropriate permissions (e.g., language.googleapis.com API access) in the folder of your election, for example: "/keys/google-key.json." Please **_NEVER upload your JSON file to GitHub_**.
   GOOGLE_APPLICATION_CREDENTIALS="../reflexai-infraestructure/google-key.json" or pointing to the folder and file you choose
-- Run the following command: `docker compose -f docker-compose.test.yaml up`
+- Run the following command: `docker compose -f docker-compose.yaml up -d --build`
 - Use http://localhost:8090/api/v1/sentiment-analyze to test the service using this payload with a POST method body:
   `{ 
       "person_id": "123",
