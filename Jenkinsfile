@@ -2,3 +2,4 @@
 # I will use parallel stages for build both microservices.
 # Then I push the images to DockerHub, also in parallel stages.
 # Finally with SSH I will deploy the microservices in the Kubernetes cluster or EC2 instances.
+# I will create three environments stages: local, staging, production. One stage for environment based in git branch
